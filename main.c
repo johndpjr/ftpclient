@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "src/sockets.h"
+#include "src/network/sockets.h"
 #include "src/repl.h"
 
 int main(int argc, char **argv) {

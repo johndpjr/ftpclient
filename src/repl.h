@@ -3,12 +3,14 @@
 
 #include <unistd.h>
 
-#include "ftp.h"
+#define REPL_RESP_BUFSIZE (4096 + 1)
+#define REPL_CMD_BUFSIZE 512
 
+static void error(char *msg);
 static int parse_resp(int sd, char *resp);
-static int get_first_digit(int num);
-static ClientAction handle_resp(int code);
-static size_t read_cmd(char *buf);
+// Prints prompt and then reads user input from stdin into buf
+static void prompt(char *prompt, char *buf);
+// Begins the REPL flow
 void start_repl(int sd);
 
 #endif //FTPCLIENT_REPL_H

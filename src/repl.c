@@ -1,19 +1,22 @@
 #include "repl.h"
-#include "sockets.h"
-#include "ftp.h"
+#include "network/sockets.h"
+#include "cmds/client_cmds.h"
+#include "cmds/ftp_cmds.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-#define REPL_RESP_BUFSIZE (4096 + 1)
-#define REPL_CMD_BUFSIZE 512
-
 enum ResponseError {
     ErrInvalidCode,
     ErrNoSpaceOrHyphen,
 };
+
+void error(char *msg) {
+    printf("%s\n", msg);
+    exit(-1);
+}
 
 int parse_resp(int sd, char *resp) {
     // Read first 4 characters of server response
@@ -56,37 +59,31 @@ int parse_resp(int sd, char *resp) {
     return code;
 }
 
-ClientAction handle_resp(int code) {
-    switch (code) {
-        case FTP_REPLY_221:
-        case FTP_REPLY_421:
-            return QuitProgram;
-        case FTP_REPLY_120:
-            return ReadNextCmd;
-        default:
-            return ReadNextCmd;
-    }
-}
-
-size_t read_cmd(char *buf) {
-    size_t bytes_read = read(STDIN_FILENO, buf, REPL_CMD_BUFSIZE - 1);
-    buf[bytes_read] = '\0';
-    return bytes_read;
-}
-
-size_t send_cmd(int sd, char *cmd, size_t cmdsize) {
-    return socket_send(sd, cmd, cmdsize);
+void prompt(char *prompt, char *buf) {
+    printf("%s", prompt);
+    fgets(buf, REPL_CMD_BUFSIZE, stdin);
 }
 
 void start_repl(int sd) {
+    char *inputbuf = malloc(REPL_CMD_BUFSIZE);
     char *respbuf = malloc(REPL_RESP_BUFSIZE);
-    if (respbuf == NULL) {
-        printf("ERROR: malloc failed\n");
-        exit(-1);
-    }
-    char cmdbuf[REPL_CMD_BUFSIZE];
-    FTP_Command cmd;
+    if (inputbuf == NULL || respbuf == NULL)
+        error("malloc failed");
+
+    // Initiate login sequence
+    prompt("Username: ", inputbuf);
+    send_ftp_cmd_user(sd, inputbuf);
+    // TODO: validate server response to login seq
+
     do {
+        // Read in client command
+        prompt("ftp> ", inputbuf);
+        // Parse client command
+        struct ClientInput clientin = parse_client_input(inputbuf);
+        if (clientin.ccmd == INVALID_CCMD)
+            continue;  // invalid command; prompt user again
+        // Handle client command
+        handle_client_cmd(clientin);
         // Interpret server response
         int code = parse_resp(sd, respbuf);
         if (code <= 0) {
@@ -96,13 +93,5 @@ void start_repl(int sd) {
         // Print server response
         printf("%s", respbuf);
         // Handle server response
-        if (handle_resp(code) == QuitProgram)
-            break;
-        // Read in user command
-        size_t cmdsize = read_cmd(cmdbuf);
-        if (send_cmd(sd, cmdbuf, cmdsize) == -1) {
-            printf("ERROR: send failed\n");
-            exit(-1);
-        }
     } while (1);
 }

@@ -55,11 +55,11 @@ build CMakeFiles/ftpclient.dir/main.c.o: C_COMPILER__ftpclient_unscanned_Debug /
   OBJECT_DIR = CMakeFiles/ftpclient.dir
   OBJECT_FILE_DIR = CMakeFiles/ftpclient.dir
 
-build CMakeFiles/ftpclient.dir/src/sockets.c.o: C_COMPILER__ftpclient_unscanned_Debug /home/john/CLionProjects/ftpclient/src/sockets.c || cmake_object_order_depends_target_ftpclient
-  DEP_FILE = CMakeFiles/ftpclient.dir/src/sockets.c.o.d
+build CMakeFiles/ftpclient.dir/src/network/sockets.c.o: C_COMPILER__ftpclient_unscanned_Debug /home/john/CLionProjects/ftpclient/src/network/sockets.c || cmake_object_order_depends_target_ftpclient
+  DEP_FILE = CMakeFiles/ftpclient.dir/src/network/sockets.c.o.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/ftpclient.dir
-  OBJECT_FILE_DIR = CMakeFiles/ftpclient.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/ftpclient.dir/src/network
 
 build CMakeFiles/ftpclient.dir/src/repl.c.o: C_COMPILER__ftpclient_unscanned_Debug /home/john/CLionProjects/ftpclient/src/repl.c || cmake_object_order_depends_target_ftpclient
   DEP_FILE = CMakeFiles/ftpclient.dir/src/repl.c.o.d
@@ -73,6 +73,24 @@ build CMakeFiles/ftpclient.dir/src/ftp.c.o: C_COMPILER__ftpclient_unscanned_Debu
   OBJECT_DIR = CMakeFiles/ftpclient.dir
   OBJECT_FILE_DIR = CMakeFiles/ftpclient.dir/src
 
+build CMakeFiles/ftpclient.dir/src/cmds/client_cmds.c.o: C_COMPILER__ftpclient_unscanned_Debug /home/john/CLionProjects/ftpclient/src/cmds/client_cmds.c || cmake_object_order_depends_target_ftpclient
+  DEP_FILE = CMakeFiles/ftpclient.dir/src/cmds/client_cmds.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/ftpclient.dir
+  OBJECT_FILE_DIR = CMakeFiles/ftpclient.dir/src/cmds
+
+build CMakeFiles/ftpclient.dir/src/cmds/ftp_cmds.c.o: C_COMPILER__ftpclient_unscanned_Debug /home/john/CLionProjects/ftpclient/src/cmds/ftp_cmds.c || cmake_object_order_depends_target_ftpclient
+  DEP_FILE = CMakeFiles/ftpclient.dir/src/cmds/ftp_cmds.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/ftpclient.dir
+  OBJECT_FILE_DIR = CMakeFiles/ftpclient.dir/src/cmds
+
+build CMakeFiles/ftpclient.dir/src/network/server.c.o: C_COMPILER__ftpclient_unscanned_Debug /home/john/CLionProjects/ftpclient/src/network/server.c || cmake_object_order_depends_target_ftpclient
+  DEP_FILE = CMakeFiles/ftpclient.dir/src/network/server.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/ftpclient.dir
+  OBJECT_FILE_DIR = CMakeFiles/ftpclient.dir/src/network
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target ftpclient
@@ -81,7 +99,7 @@ build CMakeFiles/ftpclient.dir/src/ftp.c.o: C_COMPILER__ftpclient_unscanned_Debu
 #############################################
 # Link the executable ftpclient
 
-build ftpclient: C_EXECUTABLE_LINKER__ftpclient_Debug CMakeFiles/ftpclient.dir/main.c.o CMakeFiles/ftpclient.dir/src/sockets.c.o CMakeFiles/ftpclient.dir/src/repl.c.o CMakeFiles/ftpclient.dir/src/ftp.c.o
+build ftpclient: C_EXECUTABLE_LINKER__ftpclient_Debug CMakeFiles/ftpclient.dir/main.c.o CMakeFiles/ftpclient.dir/src/network/sockets.c.o CMakeFiles/ftpclient.dir/src/repl.c.o CMakeFiles/ftpclient.dir/src/ftp.c.o CMakeFiles/ftpclient.dir/src/cmds/client_cmds.c.o CMakeFiles/ftpclient.dir/src/cmds/ftp_cmds.c.o CMakeFiles/ftpclient.dir/src/network/server.c.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/ftpclient.dir
   POST_BUILD = :
