@@ -1,5 +1,6 @@
 #include "repl.h"
 #include "sockets.h"
+#include "ftp.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,6 +56,18 @@ int parse_resp(int sd, char *resp) {
     return code;
 }
 
+ClientAction handle_resp(int code) {
+    switch (code) {
+        case FTP_REPLY_221:
+        case FTP_REPLY_421:
+            return QuitProgram;
+        case FTP_REPLY_120:
+            return ReadNextCmd;
+        default:
+            return ReadNextCmd;
+    }
+}
+
 size_t read_cmd(char *buf) {
     size_t bytes_read = read(STDIN_FILENO, buf, REPL_CMD_BUFSIZE - 1);
     buf[bytes_read] = '\0';
@@ -72,6 +85,7 @@ void start_repl(int sd) {
         exit(-1);
     }
     char cmdbuf[REPL_CMD_BUFSIZE];
+    FTP_Command cmd;
     do {
         // Interpret server response
         int code = parse_resp(sd, respbuf);
@@ -82,6 +96,8 @@ void start_repl(int sd) {
         // Print server response
         printf("%s", respbuf);
         // Handle server response
+        if (handle_resp(code) == QuitProgram)
+            break;
         // Read in user command
         size_t cmdsize = read_cmd(cmdbuf);
         if (send_cmd(sd, cmdbuf, cmdsize) == -1) {

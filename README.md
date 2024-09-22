@@ -10,7 +10,7 @@ My basic implementation follows the minimum required implementation in RFC 959:
 - MODE: Stream
 - STRUCTURE: File, Record
 - COMMANDS:
-  - USER, QUIT, PORT
+  - USER, QUIT, ~~PORT~~ PASV
   - TYPE, MODE, STRU, for the default values
   - RETR, STOR, NOOP
 - Default values for transfer parameters: TYPE (ASCII Non-print), MODE (Stream), STRU (File)

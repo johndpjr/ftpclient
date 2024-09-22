@@ -8,4 +8,6 @@ add_executable(ftpclient main.c
         src/sockets.h
         src/repl.c
         src/repl.h
+        src/ftp.c
+        src/ftp.h
 )
