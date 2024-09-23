@@ -47,13 +47,14 @@ enum ClientAction handle_client_cmd(int sd, struct ClientInput clientin) {
         case CCMD_help:
             return client_cmd_help(sd, NULL);
         case CCMD_rhelp:
-            return client_cmd_rhelp(sd);
+            return client_cmd_rhelp(sd, NULL);
         case CCMD_size:
             return client_cmd_size(sd, clientin.arg);
     }
 }
 
 enum ClientAction client_cmd_cd(int sd, char *arg) {
+
     return CA_Continue;
 }
 
@@ -80,7 +81,8 @@ enum ClientAction client_cmd_help(int sd, char *cmdname) {
     return CA_Continue;
 }
 
-enum ClientAction client_cmd_rhelp(int sd) {
+enum ClientAction client_cmd_rhelp(int sd, char *cmdname) {
+    send_ftp_cmd_help(sd, cmdname);
     return CA_Continue;
 }
 

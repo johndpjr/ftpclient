@@ -51,7 +51,7 @@ enum ClientAction client_cmd_get(int sd, char *arg);
 enum ClientAction client_cmd_ls(int sd, char *arg);
 enum ClientAction client_cmd_pwd(int sd);
 enum ClientAction client_cmd_help(int sd, char *cmdname);
-enum ClientAction client_cmd_rhelp(int sd);
+enum ClientAction client_cmd_rhelp(int sd, char *cmdname);
 enum ClientAction client_cmd_size(int sd, char *arg);
 
 #endif //FTPCLIENT_CLIENT_CMDS_H
