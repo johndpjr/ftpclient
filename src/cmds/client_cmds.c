@@ -17,19 +17,19 @@ enum ClientCommand match_client_cmd(char *cmd) {
 
 struct ClientInput parse_client_input(char *input) {
     struct ClientInput clientin;
+    clientin.arg = NULL;
     // Parse input
     const char sep = ' ';
     char * const sep_at = strchr(input, sep);
-    clientin.arg = NULL;
+    // Remove newline '\n' in input
+    char *newline = strchr(input, '\n');
+    if (newline != NULL) *newline = '\0';
     if (sep_at != NULL) {
         // Found a space; make two strings
         *sep_at = '\0';
         // arg is found after the first space
         clientin.arg = sep_at + 1;
     }
-    // Remove newline '\n' in input
-    char *newline = strchr(input, '\n');
-    if (newline != NULL) *newline = '\0';
     clientin.ccmd = match_client_cmd(input);
     return clientin;
 }
@@ -71,14 +71,19 @@ enum ClientAction client_cmd_get(int sd, char *arg) {
     // Change TYPE to Image
     send_ftp_cmd_type(sd, "I");
     server_recv_resp(sd, recvbuf, FTP_RESP_MAXSIZE);
+    // Invoke SIZE to get filesize
+    send_ftp_cmd_size(sd, arg);
+    int filesize = recv_ftp_cmd_size(sd, recvbuf);
     // Enter PASV mode
     send_ftp_cmd_pasv(sd);
     // Get socket connection from PASV response
     int data_transfer_sd = recv_ftp_cmd_pasv(sd, recvbuf);
     // Start file transfer via RETR
     send_ftp_cmd_retr(sd, arg);
-    recv_ftp_cmd_retr(sd, data_transfer_sd, arg);
+    recv_ftp_cmd_retr(sd, data_transfer_sd, recvbuf, arg, filesize);
+    // Clean up resources
     free(recvbuf);
+    close(data_transfer_sd);
     return CA_Continue;
 }
 
