@@ -88,7 +88,7 @@ void start_repl(int sd) {
         struct ClientInput clientin = parse_client_input(inputbuf);
         if (clientin.ccmd == INVALID_CCMD)
             continue;  // invalid command; prompt user again
-        handle_client_cmd(sd, clientin);
+        enum ClientAction ca = handle_client_cmd(sd, clientin);
 
         // Interpret server response
         int code = parse_resp(sd, respbuf);
@@ -97,5 +97,7 @@ void start_repl(int sd) {
         // Print server response
         printf("%s", respbuf);
         // Handle server response
+        if (ca == CA_End)
+            break;
     } while (1);
 }

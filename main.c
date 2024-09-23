@@ -33,5 +33,7 @@ int main(int argc, char **argv) {
     // Start REPL
     start_repl(sd);
 
+    close(sd);
+
     return 0;
 }

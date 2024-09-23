@@ -31,57 +31,59 @@ struct ClientInput parse_client_input(char *input) {
     return clientin;
 }
 
-void handle_client_cmd(int sd, struct ClientInput clientin) {
+enum ClientAction handle_client_cmd(int sd, struct ClientInput clientin) {
     switch (clientin.ccmd) {
-        case Cd:
-            client_cmd_cd(sd, clientin.arg);
-            break;
-        case Exit:
-        case Quit:
-            client_cmd_quit(sd);
-            break;
-        case Get:
-            client_cmd_get(sd, clientin.arg);
-            break;
-        case Ls:
-            client_cmd_ls(sd, clientin.arg);
-            break;
-        case Pwd:
-            client_cmd_pwd(sd);
-            break;
-        case Help:
-            client_cmd_help(sd);
-            break;
-        case Rhelp:
-            client_cmd_rhelp(sd);
-            break;
-        case Size:
-            client_cmd_size(sd, clientin.arg);
-            break;
+        case CCMD_cd:
+            return client_cmd_cd(sd, clientin.arg);
+        case CCMD_exit:
+        case CCMD_quit:
+            return client_cmd_quit(sd);
+        case CCMD_get:
+            return client_cmd_get(sd, clientin.arg);
+        case CCMD_ls:
+            return client_cmd_ls(sd, clientin.arg);
+        case CCMD_pwd:
+            return client_cmd_pwd(sd);
+        case CCMD_help:
+            return client_cmd_help(sd, NULL);
+        case CCMD_rhelp:
+            return client_cmd_rhelp(sd);
+        case CCMD_size:
+            return client_cmd_size(sd, clientin.arg);
     }
 }
 
-void client_cmd_cd(int sd, char *arg) {
+enum ClientAction client_cmd_cd(int sd, char *arg) {
+    return CA_Continue;
 }
 
-void client_cmd_quit(int sd) {
+enum ClientAction client_cmd_quit(int sd) {
     send_ftp_cmd_quit(sd);
+    return CA_End;
 }
 
-void client_cmd_get(int sd, char *arg) {
+enum ClientAction client_cmd_get(int sd, char *arg) {
+    return CA_Continue;
 }
 
-void client_cmd_ls(int sd, char *arg) {
+enum ClientAction client_cmd_ls(int sd, char *arg) {
+    return CA_Continue;
 }
 
-void client_cmd_pwd(int sd) {
+enum ClientAction client_cmd_pwd(int sd) {
+    send_ftp_cmd_pwd(sd);
+    return CA_Continue;
 }
 
-void client_cmd_help(int sd) {
+enum ClientAction client_cmd_help(int sd, char *cmdname) {
+    send_ftp_cmd_help(sd, cmdname);
+    return CA_Continue;
 }
 
-void client_cmd_rhelp(int sd) {
+enum ClientAction client_cmd_rhelp(int sd) {
+    return CA_Continue;
 }
 
-void client_cmd_size(int sd, char *arg) {
+enum ClientAction client_cmd_size(int sd, char *arg) {
+    return CA_Continue;
 }
