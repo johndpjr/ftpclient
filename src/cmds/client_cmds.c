@@ -1,9 +1,7 @@
 #include "client_cmds.h"
+#include "ftp_cmds.h"
 
-#include <stdio.h>
 #include <string.h>
-
-#define CMD_SIZE 16
 
 enum ClientCommand match_client_cmd(char *cmd) {
     for (int ccmd = 0; ccmd < N_CCMDS; ++ccmd) {
@@ -33,62 +31,57 @@ struct ClientInput parse_client_input(char *input) {
     return clientin;
 }
 
-void handle_client_cmd(struct ClientInput clientin) {
+void handle_client_cmd(int sd, struct ClientInput clientin) {
     switch (clientin.ccmd) {
         case Cd:
-            client_cmd_cd(clientin.arg);
+            client_cmd_cd(sd, clientin.arg);
             break;
         case Exit:
         case Quit:
-            client_cmd_quit();
+            client_cmd_quit(sd);
             break;
         case Get:
-            client_cmd_get(clientin.arg);
+            client_cmd_get(sd, clientin.arg);
             break;
         case Ls:
-            client_cmd_ls(clientin.arg);
+            client_cmd_ls(sd, clientin.arg);
             break;
         case Pwd:
-            client_cmd_pwd();
+            client_cmd_pwd(sd);
             break;
         case Help:
-            client_cmd_help();
+            client_cmd_help(sd);
             break;
         case Rhelp:
-            client_cmd_rhelp();
-            break;
-        case Rmdir:
-            client_cmd_rmdir(clientin.arg);
+            client_cmd_rhelp(sd);
             break;
         case Size:
-            client_cmd_size(clientin.arg);
+            client_cmd_size(sd, clientin.arg);
             break;
     }
 }
 
-void client_cmd_cd(char *arg) {
+void client_cmd_cd(int sd, char *arg) {
 }
 
-void client_cmd_quit() {
+void client_cmd_quit(int sd) {
+    send_ftp_cmd_quit(sd);
 }
 
-void client_cmd_get(char *arg) {
+void client_cmd_get(int sd, char *arg) {
 }
 
-void client_cmd_ls(char *arg) {
+void client_cmd_ls(int sd, char *arg) {
 }
 
-void client_cmd_pwd() {
+void client_cmd_pwd(int sd) {
 }
 
-void client_cmd_help() {
+void client_cmd_help(int sd) {
 }
 
-void client_cmd_rhelp() {
+void client_cmd_rhelp(int sd) {
 }
 
-void client_cmd_rmdir(char *arg) {
-}
-
-void client_cmd_size(char *arg) {
+void client_cmd_size(int sd, char *arg) {
 }

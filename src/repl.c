@@ -82,14 +82,12 @@ void start_repl(int sd) {
         struct ClientInput clientin = parse_client_input(inputbuf);
         if (clientin.ccmd == INVALID_CCMD)
             continue;  // invalid command; prompt user again
-        // Handle client command
-        handle_client_cmd(clientin);
+        handle_client_cmd(sd, clientin);
+
         // Interpret server response
         int code = parse_resp(sd, respbuf);
-        if (code <= 0) {
-            printf("ERROR: %s\n", respbuf);
-            exit(-1);
-        }
+        if (code <= 0)
+            error(respbuf);
         // Print server response
         printf("%s", respbuf);
         // Handle server response

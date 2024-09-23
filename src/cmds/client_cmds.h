@@ -10,7 +10,6 @@ enum ClientCommand {
     Pwd,
     Help,
     Rhelp,
-    Rmdir,
     Size,
     N_CCMDS,
     INVALID_CCMD,
@@ -26,7 +25,6 @@ static const char *CCMDS[] = {
     "pwd",
     "help",
     "rhelp",
-    "rmdir",
     "size",
 };
 
@@ -40,16 +38,15 @@ static enum ClientCommand match_client_cmd(char *cmd);
 // Returns the client input, with the command and arguments
 struct ClientInput parse_client_input(char *input);
 // Dispatches the client command to the corresponding command function
-void handle_client_cmd(struct ClientInput);
+void handle_client_cmd(int sd, struct ClientInput);
 
-void client_cmd_cd(char *arg);
-void client_cmd_quit();
-void client_cmd_get(char *arg);
-void client_cmd_ls(char *arg);
-void client_cmd_pwd();
-void client_cmd_help();
-void client_cmd_rhelp();
-void client_cmd_rmdir(char *arg);
-void client_cmd_size(char *arg);
+void client_cmd_cd(int sd, char *arg);
+void client_cmd_quit(int sd);
+void client_cmd_get(int sd, char *arg);
+void client_cmd_ls(int sd, char *arg);
+void client_cmd_pwd(int sd);
+void client_cmd_help(int sd);
+void client_cmd_rhelp(int sd);
+void client_cmd_size(int sd, char *arg);
 
 #endif //FTPCLIENT_CLIENT_CMDS_H
