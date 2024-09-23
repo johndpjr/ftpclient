@@ -70,10 +70,16 @@ void start_repl(int sd) {
     if (inputbuf == NULL || respbuf == NULL)
         error("malloc failed");
 
+    // Parse server ready response
+    parse_resp(sd, respbuf);
+    printf("%s", respbuf);
     // Initiate login sequence
     prompt("Username: ", inputbuf);
     send_ftp_cmd_user(sd, inputbuf);
+    // Parse login response
     // TODO: validate server response to login seq
+    parse_resp(sd, respbuf);
+    printf("%s", respbuf);
 
     do {
         // Read in client command

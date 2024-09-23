@@ -23,10 +23,10 @@ struct ClientInput parse_client_input(char *input) {
         *sep_at = '\0';
         // arg is found after the first space
         clientin.arg = sep_at + 1;
-        // Remove newline '\n' after arg
-        char *newline = strchr(clientin.arg, '\n');
-        if (newline != NULL) *newline = '\0';
     }
+    // Remove newline '\n' in input
+    char *newline = strchr(input, '\n');
+    if (newline != NULL) *newline = '\0';
     clientin.ccmd = match_client_cmd(input);
     return clientin;
 }
