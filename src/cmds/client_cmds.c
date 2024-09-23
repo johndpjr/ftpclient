@@ -76,16 +76,17 @@ enum ClientAction client_cmd_pwd(int sd) {
     return CA_Continue;
 }
 
-enum ClientAction client_cmd_help(int sd, char *cmdname) {
-    send_ftp_cmd_help(sd, cmdname);
+enum ClientAction client_cmd_help(int sd, char *arg) {
+    send_ftp_cmd_help(sd, arg);
     return CA_Continue;
 }
 
-enum ClientAction client_cmd_rhelp(int sd, char *cmdname) {
-    send_ftp_cmd_help(sd, cmdname);
+enum ClientAction client_cmd_rhelp(int sd, char *arg) {
+    send_ftp_cmd_help(sd, arg);
     return CA_Continue;
 }
 
 enum ClientAction client_cmd_size(int sd, char *arg) {
+    send_ftp_cmd_size(sd, arg);
     return CA_Continue;
 }
