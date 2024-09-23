@@ -67,21 +67,14 @@ enum ClientAction client_cmd_quit(int sd) {
 }
 
 enum ClientAction client_cmd_get(int sd, char *arg) {
-    char *respbuf = malloc(FTP_RESP_MAXSIZE);
+    char *recvbuf = malloc(FTP_RESP_MAXSIZE);
     // Change TYPE to Image
     send_ftp_cmd_type(sd, "I");
-    server_recv_resp(sd, respbuf, FTP_RESP_MAXSIZE);
+    server_recv_resp(sd, recvbuf, FTP_RESP_MAXSIZE);
     // Enter PASV mode
     send_ftp_cmd_pasv(sd);
-    size_t bytes_read = server_recv_resp(sd, respbuf, FTP_RESP_MAXSIZE);
-    respbuf[bytes_read] = '\0';
-    // Parse IP address and port from response
-    int code;
-    sscanf(respbuf, "%d", &code);
-    if (code != 227)
-        return CA_Continue;
-    char *first_digit;
-//    for (int i = 0; i < strlen(respbuf), in)
+    // Get socket connection from PASV response
+    int data_transfer_sd = recv_ftp_cmd_pasv(sd, recvbuf);
     return CA_Continue;
 }
 

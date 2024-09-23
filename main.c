@@ -16,15 +16,16 @@ int main(int argc, char **argv) {
     strcpy(addrstr, server);
     struct sockaddr_in serveraddr;
 
-    if (resolve_server(server, &serveraddr, addrstr) == -1) {
+    if (resolve_server(server, &serveraddr, FTP_CONNECTION_PORT) == -1) {
         printf("ERROR: failed to resolve server %s\n", server);
         exit(-1);
     }
+    ip_binary_to_text(&serveraddr, addrstr);
     printf("Trying %s...\n", addrstr);
 
     int sd = socket_make();
-    int ret;
-    if ((ret = socket_connect(sd, &serveraddr)) != 0) {
+    int ret = socket_connect(sd, &serveraddr);
+    if (ret != 0) {
         printf("ERROR: socket_connect failed with %d\n", ret);
         exit(-1);
     }

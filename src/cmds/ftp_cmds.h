@@ -4,6 +4,8 @@
 static void make_ftp_cmd(char *s, char *cmd, char *arg);
 static void send_ftp_cmd(int sd, char *cmd, char *arg);
 
+/* Send commands */
+
 void send_ftp_cmd_user(int sd, char *username);
 void send_ftp_cmd_cwd(int sd, char *pathname);    // cd
 void send_ftp_cmd_quit(int sd);                   // exit & quit
@@ -14,5 +16,9 @@ void send_ftp_cmd_retr(int sd, char *pathname);  // get
 void send_ftp_cmd_list(int sd, char *pathname);  // ls
 void send_ftp_cmd_pwd(int sd);                   // pwd
 void send_ftp_cmd_help(int sd, char *cmdname);   // rhelp
+
+/* Receive command */
+
+int recv_ftp_cmd_pasv(int sd, char *recvbuf);
 
 #endif //FTPCLIENT_FTP_CMDS_H

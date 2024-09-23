@@ -1,7 +1,9 @@
 #include "ftp_cmds.h"
 #include "../network/server.h"
+#include "../network/sockets.h"
 #include "../defs.h"
 
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -56,4 +58,30 @@ void send_ftp_cmd_pwd(int sd) {
 
 void send_ftp_cmd_help(int sd, char *cmdname) {
     send_ftp_cmd(sd, "HELP", cmdname);
+}
+
+int recv_ftp_cmd_pasv(int sd, char *recvbuf) {
+    size_t bytes_read = server_recv_resp(sd, recvbuf, FTP_RESP_MAXSIZE);
+    recvbuf[bytes_read] = '\0';
+    // Look for first digit after initial space
+    char *cursor = strchr(recvbuf, ' ') + 1;
+    int h1, h2, h3, h4, p1, p2;
+    int matches = 0;
+    while (*cursor != '\0') {
+        if (isdigit(*cursor)) {
+            matches = sscanf(cursor, "%d,%d,%d,%d,%d,%d", &h1, &h2, &h3, &h4, &p1, &p2);
+            break;
+        }
+        ++cursor;
+    }
+    if (matches != 6)
+        return -1;
+
+    char addrstr[IPADDR_STRLEN];
+    sprintf(addrstr, "%d.%d.%d.%d", h1, h2, h3, h4);
+    struct sockaddr_in serveraddr;
+    int port = p1 * 256 + p2;
+    resolve_server(addrstr, &serveraddr, port);
+    int data_transfer_sd = socket_make();
+    return socket_connect(data_transfer_sd, &serveraddr);
 }
