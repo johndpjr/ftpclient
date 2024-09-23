@@ -50,3 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Project exclude paths
+/cmake-build-debug/
+/CMakeLists.txt
+/main.cpp
+/.idea/
