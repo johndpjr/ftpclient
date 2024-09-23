@@ -85,3 +85,10 @@ int recv_ftp_cmd_pasv(int sd, char *recvbuf) {
     int data_transfer_sd = socket_make();
     return socket_connect(data_transfer_sd, &serveraddr);
 }
+
+void recv_ftp_cmd_retr(int sd, int dt_sd, char *recvbuf, char *pathname) {
+//    server_recv_resp(sd, recvbuf, FTP_RESP_MAXSIZE);
+    // Create file
+    // Receive data from data transfer socket
+//    server_recv_resp(data_transfer_sd, )
+}

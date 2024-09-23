@@ -17,8 +17,9 @@ void send_ftp_cmd_list(int sd, char *pathname);  // ls
 void send_ftp_cmd_pwd(int sd);                   // pwd
 void send_ftp_cmd_help(int sd, char *cmdname);   // rhelp
 
-/* Receive command */
+/* Receive commands */
 
 int recv_ftp_cmd_pasv(int sd, char *recvbuf);
+void recv_ftp_cmd_retr(int sd, int dt_sd, char *recvbuf, char *pathname);
 
 #endif //FTPCLIENT_FTP_CMDS_H

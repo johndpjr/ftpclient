@@ -75,6 +75,10 @@ enum ClientAction client_cmd_get(int sd, char *arg) {
     send_ftp_cmd_pasv(sd);
     // Get socket connection from PASV response
     int data_transfer_sd = recv_ftp_cmd_pasv(sd, recvbuf);
+    // Start file transfer via RETR
+    send_ftp_cmd_retr(sd, arg);
+    recv_ftp_cmd_retr(sd, data_transfer_sd, arg);
+    free(recvbuf);
     return CA_Continue;
 }
 
