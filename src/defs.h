@@ -1,0 +1,7 @@
+#ifndef FTPCLIENT_DEFS_H
+#define FTPCLIENT_DEFS_H
+
+#define FTP_RESP_MAXSIZE (4096 + 1)
+#define REPL_CMD_BUFSIZE 512
+
+#endif //FTPCLIENT_DEFS_H

@@ -14,4 +14,5 @@ add_executable(ftpclient main.c
         src/cmds/ftp_cmds.h
         src/network/server.c
         src/network/server.h
+        src/defs.h
 )

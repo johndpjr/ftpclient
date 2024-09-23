@@ -6,5 +6,5 @@ void server_send_cmd(int sd, char *cmd, size_t cmdsize) {
 }
 
 void server_recv_resp(int sd, char *respbuf, size_t max_respsize) {
-    return;
+    socket_recv(sd, respbuf, max_respsize);
 }

@@ -1,6 +1,6 @@
 #include "ftp_cmds.h"
-#include "../repl.h"
 #include "../network/server.h"
+#include "../defs.h"
 
 #include <stdio.h>
 #include <string.h>

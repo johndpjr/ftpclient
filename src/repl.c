@@ -2,6 +2,7 @@
 #include "network/sockets.h"
 #include "cmds/client_cmds.h"
 #include "cmds/ftp_cmds.h"
+#include "defs.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,9 +44,9 @@ int parse_resp(int sd, char *resp) {
     char endstr[5];
     sprintf(endstr, "%d ", code);
 
-    while (bytes_recv < REPL_RESP_BUFSIZE - 1) {
+    while (bytes_recv < FTP_RESP_MAXSIZE - 1) {
         // Read the remaining bytes
-        rc = socket_recv(sd, &resp[bytes_recv], REPL_RESP_BUFSIZE - bytes_recv - 1);
+        rc = socket_recv(sd, &resp[bytes_recv], FTP_RESP_MAXSIZE - bytes_recv - 1);
         // Check for end line conditions
         if (c4 == ' ' && strstr(resp, "\r\n") != NULL)
             break;
@@ -66,7 +67,7 @@ void prompt(char *prompt, char *buf) {
 
 void start_repl(int sd) {
     char *inputbuf = malloc(REPL_CMD_BUFSIZE);
-    char *respbuf = malloc(REPL_RESP_BUFSIZE);
+    char *respbuf = malloc(FTP_RESP_MAXSIZE);
     if (inputbuf == NULL || respbuf == NULL)
         error("malloc failed");
 
@@ -100,4 +101,7 @@ void start_repl(int sd) {
         if (ca == CA_End)
             break;
     } while (1);
+
+    free(inputbuf);
+    free(respbuf);
 }

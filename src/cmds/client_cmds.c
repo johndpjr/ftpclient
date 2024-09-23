@@ -1,7 +1,10 @@
 #include "client_cmds.h"
+#include "../defs.h"
 #include "ftp_cmds.h"
+#include "../network/server.h"
 
 #include <string.h>
+#include <malloc.h>
 
 enum ClientCommand match_client_cmd(char *cmd) {
     for (int ccmd = 0; ccmd < N_CCMDS; ++ccmd) {
@@ -64,6 +67,10 @@ enum ClientAction client_cmd_quit(int sd) {
 }
 
 enum ClientAction client_cmd_get(int sd, char *arg) {
+    char *respbuf = malloc(FTP_RESP_MAXSIZE);
+    // Change TYPE to Image
+    send_ftp_cmd_type(sd, "I");
+//    server_recv_resp(sd, )
     return CA_Continue;
 }
 
