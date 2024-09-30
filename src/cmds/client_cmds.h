@@ -34,6 +34,19 @@ static const char *CCMDS[] = {
     "size",
 };
 
+// NOTE: this must match the order of commands in enum ClientCommand
+static const char *CCMD_HELP[] = {
+        "cd\tchange directory",
+        "exit\tclose connection and quit program",
+        "quit\tclose connection and quit program",
+        "get\tdownload file from remote server",
+        "ls\tlist files in working directory",
+        "pwd\tprint working directory",
+        "help\tshow help for a command",
+        "rhelp\tshow supported commands from remote server",
+        "size\tget the size of a remote file (in bytes)",
+};
+
 struct ClientInput {
     enum ClientCommand ccmd;
     char *arg;
@@ -51,7 +64,7 @@ enum ClientAction client_cmd_quit(int sd);
 enum ClientAction client_cmd_get(int sd, char *arg);
 enum ClientAction client_cmd_ls(int sd, char *arg);
 enum ClientAction client_cmd_pwd(int sd);
-enum ClientAction client_cmd_help(int sd, char *arg);
+enum ClientAction client_cmd_help(char *arg);
 enum ClientAction client_cmd_rhelp(int sd, char *arg);
 enum ClientAction client_cmd_size(int sd, char *arg);
 

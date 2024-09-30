@@ -48,7 +48,7 @@ enum ClientAction handle_client_cmd(int sd, struct ClientInput clientin) {
         case CCMD_pwd:
             return client_cmd_pwd(sd);
         case CCMD_help:
-            return client_cmd_help(sd, clientin.arg);
+            return client_cmd_help(clientin.arg);
         case CCMD_rhelp:
             return client_cmd_rhelp(sd, clientin.arg);
         case CCMD_size:
@@ -96,8 +96,28 @@ enum ClientAction client_cmd_pwd(int sd) {
     return CA_Parse;
 }
 
-enum ClientAction client_cmd_help(int sd, char *arg) {
-    send_ftp_cmd_help(sd, arg);
+enum ClientAction client_cmd_help(char *arg) {
+    if (arg == NULL) {
+        printf("Commands are:\n");
+        int i = 0;
+        for (i = 0; i < N_CCMDS; ++i) {
+            printf("%s", CCMDS[i]);
+            if (i % 4 == 0 && i != 0) printf("\n");
+            else printf("\t");
+        }
+    } else {
+        int c;
+        for (c = 0; c < N_CCMDS; ++c) {
+            if (strcmp(CCMDS[c], arg) == 0) {
+                printf("%s\n", CCMD_HELP[c]);
+                goto out;
+            }
+        }
+        // Unrecognized command
+        printf("Invalid command '%s'\n", arg);
+    }
+
+out:
     return CA_NextCommand;
 }
 
