@@ -84,7 +84,7 @@ enum ClientAction client_cmd_get(int sd, char *arg) {
     // Clean up resources
     free(recvbuf);
     close(data_transfer_sd);
-    return CA_NextCommand;
+    return CA_Parse;
 }
 
 enum ClientAction client_cmd_ls(int sd, char *arg) {
@@ -123,10 +123,10 @@ out:
 
 enum ClientAction client_cmd_rhelp(int sd, char *arg) {
     send_ftp_cmd_help(sd, arg);
-    return CA_NextCommand;
+    return CA_Parse;
 }
 
 enum ClientAction client_cmd_size(int sd, char *arg) {
     send_ftp_cmd_size(sd, arg);
-    return CA_NextCommand;
+    return CA_Parse;
 }
