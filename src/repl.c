@@ -75,12 +75,17 @@ void start_repl(int sd) {
     parse_resp(sd, respbuf);
     printf("%s", respbuf);
     // Initiate login sequence
-    prompt("Username: ", inputbuf);
-    send_ftp_cmd_user(sd, inputbuf);
-    // Parse login response
-    // TODO: validate server response to login seq
-    parse_resp(sd, respbuf);
-    printf("%s", respbuf);
+    int inlogin = 1;
+    int code = -1;
+    do {
+        prompt("Username: ", inputbuf);
+        send_ftp_cmd_user(sd, inputbuf);
+        // Parse login response
+        code = parse_resp(sd, respbuf);
+        printf("%s", respbuf);
+        if (code == 230)
+            inlogin = 0;
+    } while (inlogin);
 
     do {
         // Read in client command
