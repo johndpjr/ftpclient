@@ -81,14 +81,24 @@ enum ClientAction client_cmd_get(int sd, char *arg) {
     // Start file transfer via RETR
     send_ftp_cmd_retr(sd, arg);
     recv_ftp_cmd_retr(sd, data_transfer_sd, recvbuf, arg, filesize);
-    // Clean up resources
     free(recvbuf);
-    close(data_transfer_sd);
     return CA_Parse;
 }
 
 enum ClientAction client_cmd_ls(int sd, char *arg) {
-    return CA_NextCommand;
+    char *recvbuf = malloc(FTP_RESP_MAXSIZE);
+    // Change TYPE to ASCII
+    send_ftp_cmd_type(sd, "A");
+    server_recv_resp(sd, recvbuf, FTP_RESP_MAXSIZE);
+    // Enter PASV mode
+    send_ftp_cmd_pasv(sd);
+    // Get socket connection from PASV response
+    int data_transfer_sd = recv_ftp_cmd_pasv(sd, recvbuf);
+    // Start directory listing via LIST
+    send_ftp_cmd_list(sd, arg);
+    recv_ftp_cmd_list(sd, data_transfer_sd, recvbuf, arg);
+    free(recvbuf);
+    return CA_Parse;
 }
 
 enum ClientAction client_cmd_pwd(int sd) {

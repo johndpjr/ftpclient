@@ -22,5 +22,6 @@ void send_ftp_cmd_help(int sd, char *cmdname);   // rhelp
 int recv_ftp_cmd_size(int sd, char *recvbuf);
 int recv_ftp_cmd_pasv(int sd, char *recvbuf);
 void recv_ftp_cmd_retr(int sd, int dt_sd, char *recvbuf, char *pathname, int filesize);
+void recv_ftp_cmd_list(int sd, int dt_sd, char *recvbuf, char *pathname);
 
 #endif //FTPCLIENT_FTP_CMDS_H

@@ -108,3 +108,15 @@ void recv_ftp_cmd_retr(int sd, int dt_sd, char *recvbuf, char *pathname, int fil
     free(fbuf);
     close(dt_sd);
 }
+
+void recv_ftp_cmd_list(int sd, int dt_sd, char *recvbuf, char *pathname) {
+    // Retrieve server message
+    size_t bytes_recv = server_recv_resp(sd, recvbuf, FTP_RESP_MAXSIZE);
+    recvbuf[bytes_recv] = '\0';
+    printf("%s", recvbuf);
+    // Receive directory listing data into recvbuf
+    bytes_recv = server_recv_resp(dt_sd, recvbuf, FTP_RESP_MAXSIZE);
+    recvbuf[bytes_recv] = '\0';
+    printf("%s", recvbuf);
+    close(dt_sd);
+}
