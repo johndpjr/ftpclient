@@ -2,8 +2,9 @@
 #define FTPCLIENT_CLIENT_CMDS_H
 
 enum ClientAction {
-    CA_Continue,
+    CA_NextCommand,
     CA_End,
+    CA_Parse,
 };
 
 enum ClientCommand {

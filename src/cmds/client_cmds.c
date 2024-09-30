@@ -58,7 +58,7 @@ enum ClientAction handle_client_cmd(int sd, struct ClientInput clientin) {
 
 enum ClientAction client_cmd_cd(int sd, char *arg) {
     send_ftp_cmd_cwd(sd, arg);
-    return CA_Continue;
+    return CA_Parse;
 }
 
 enum ClientAction client_cmd_quit(int sd) {
@@ -84,29 +84,29 @@ enum ClientAction client_cmd_get(int sd, char *arg) {
     // Clean up resources
     free(recvbuf);
     close(data_transfer_sd);
-    return CA_Continue;
+    return CA_NextCommand;
 }
 
 enum ClientAction client_cmd_ls(int sd, char *arg) {
-    return CA_Continue;
+    return CA_NextCommand;
 }
 
 enum ClientAction client_cmd_pwd(int sd) {
     send_ftp_cmd_pwd(sd);
-    return CA_Continue;
+    return CA_Parse;
 }
 
 enum ClientAction client_cmd_help(int sd, char *arg) {
     send_ftp_cmd_help(sd, arg);
-    return CA_Continue;
+    return CA_NextCommand;
 }
 
 enum ClientAction client_cmd_rhelp(int sd, char *arg) {
     send_ftp_cmd_help(sd, arg);
-    return CA_Continue;
+    return CA_NextCommand;
 }
 
 enum ClientAction client_cmd_size(int sd, char *arg) {
     send_ftp_cmd_size(sd, arg);
-    return CA_Continue;
+    return CA_NextCommand;
 }

@@ -91,6 +91,8 @@ void start_repl(int sd) {
             continue;  // invalid command; prompt user again
         enum ClientAction ca = handle_client_cmd(sd, clientin);
 
+        if (ca == CA_NextCommand)
+            continue;
         // Interpret server response
         int code = parse_resp(sd, respbuf);
         if (code <= 0)
